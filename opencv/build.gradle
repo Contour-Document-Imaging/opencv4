@@ -88,9 +88,11 @@
 //   }
 //
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'maven-publish'
+}
 
 def openCVersionName = "4.6.0"
 def openCVersionCode = ((4 * 100 + 6) * 100 + 0) * 10 + 0
@@ -146,7 +148,7 @@ android {
         }
     }
 
-    /*afterEvaluate {
+    afterEvaluate {
         publishing {
             publications {
                 release(MavenPublication) {
@@ -154,7 +156,7 @@ android {
                 }
             }
         }
-    }*/
+    }
 }
 
 dependencies {
