@@ -143,6 +143,7 @@ android {
     externalNativeBuild {
         cmake {
             path (project.projectDir.toString() + '/libcxx_helper/CMakeLists.txt')
+            version "3.10.2"
         }
     }
 
@@ -150,9 +151,7 @@ android {
         publishing {
             publications {
                 release(MavenPublication) {
-                    groupId = 'org.opencv'
-                    artifactId = 'opencv'
-                    version = '4.6.0'
+                    from components.release
                 }
             }
         }
