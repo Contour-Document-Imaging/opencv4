@@ -1,24 +1,25 @@
 package org.opencv.android;
 
-import java.util.List;
-
-import org.opencv.BuildConfig;
-import org.opencv.R;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import org.opencv.R;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+
+import java.util.List;
 
 /**
  * This is a basic class, implementing the interaction with Camera and OpenCV library.
@@ -83,6 +84,11 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         styledAttrs.recycle();
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isInPortraitMode = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+    }
     /**
      * Sets the camera index
      * @param cameraIndex new camera index
@@ -395,6 +401,61 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
     }
 
+    private float dx, dy, px, py;
+
+    private float getXTranslation(Canvas canvas) {
+        if(dx != 0) {
+            return dx;
+        } else {
+            return (canvas.getWidth() - mCacheBitmap.getWidth()) / 2f;
+        }
+    }
+
+    private float getYTranslation(Canvas canvas) {
+        if(dy != 0) {
+            return dy;
+        } else {
+            return (canvas.getHeight() - mCacheBitmap.getHeight()) / 2f;
+        }
+    }
+
+    private float getPxTranslation(Canvas canvas) {
+        if(px != 0) {
+            return px;
+        } else {
+            return canvas.getWidth()/2f;
+        }
+    }
+
+    private float getPyTranslation(Canvas canvas) {
+        if(py != 0) {
+            return py;
+        } else {
+            return canvas.getHeight()/2f;
+        }
+    }
+
+    Matrix mMatrix; // I rotate it with minimal process
+    private boolean isPortraitMatrixInitialized = false;
+    private boolean isInPortraitMode = false;
+
+    private void initializePortraitMatrixIfNeeded(Canvas canvas) {
+        if (!isPortraitMatrixInitialized) {
+            mMatrix = new Matrix();
+            mMatrix.preTranslate(getXTranslation(canvas), getYTranslation(canvas));
+            mMatrix.postRotate(90f, getPxTranslation(canvas), getPyTranslation(canvas));
+            float scale = (float) canvas.getWidth() / (float) mCacheBitmap.getHeight();
+            mMatrix.postScale(scale, scale, getPxTranslation(canvas), getPyTranslation(canvas));
+            isPortraitMatrixInitialized = true;
+        }
+    }
+
+    @Override
+    public void layout(int l, int t, int r, int b) {
+        super.layout(l, t, r, b);
+        isPortraitMatrixInitialized = false; // Invalidate matrix on layout change
+    }
+
     /**
      * This method shall be called by the subclasses when they have valid
      * object and want it to be delivered to external client (via callback) and
@@ -426,21 +487,24 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "mStretch value: " + mScale);
 
-                if (mScale != 0) {
-                    canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
-                         new Rect((int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2),
-                         (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2),
-                         (int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2 + mScale*mCacheBitmap.getWidth()),
-                         (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2 + mScale*mCacheBitmap.getHeight())), null);
+                if(isInPortraitMode) {
+                    initializePortraitMatrixIfNeeded(canvas);
+                    canvas.drawBitmap(mCacheBitmap, mMatrix, null);
                 } else {
-                     canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
-                         new Rect((canvas.getWidth() - mCacheBitmap.getWidth()) / 2,
-                         (canvas.getHeight() - mCacheBitmap.getHeight()) / 2,
-                         (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth(),
-                         (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
+                    if (mScale != 0) {
+                        canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
+                                new Rect((int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2),
+                                        (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2),
+                                        (int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2 + mScale*mCacheBitmap.getWidth()),
+                                        (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2 + mScale*mCacheBitmap.getHeight())), null);
+                    } else {
+                        canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
+                                new Rect((canvas.getWidth() - mCacheBitmap.getWidth()) / 2,
+                                        (canvas.getHeight() - mCacheBitmap.getHeight()) / 2,
+                                        (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth(),
+                                        (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
+                    }
                 }
 
                 if (mFpsMeter != null) {
