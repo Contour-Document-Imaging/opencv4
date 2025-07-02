@@ -143,7 +143,6 @@ android {
     externalNativeBuild {
         cmake {
             path (project.projectDir.toString() + '/libcxx_helper/CMakeLists.txt')
-            version "3.10.2"
         }
     }
 

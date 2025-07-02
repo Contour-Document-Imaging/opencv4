@@ -106,6 +106,9 @@
 /* PNG codec */
 #define HAVE_PNG
 
+/* PNG codec */
+/* #undef HAVE_SPNG */
+
 /* Posix threads (pthreads) */
 #define HAVE_PTHREAD
 
