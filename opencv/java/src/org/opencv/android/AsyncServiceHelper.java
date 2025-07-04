@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 import org.opencv.core.Core;
-import org.opencv.engine.OpenCVEngineInterface;
+//import org.opencv.engine.OpenCVEngineInterface;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.util.Log;
 class AsyncServiceHelper
 {
     public static boolean initOpenCV(String Version, final Context AppContext,
-            final LoaderCallbackInterface Callback)
+                                     final LoaderCallbackInterface Callback)
     {
         AsyncServiceHelper helper = new AsyncServiceHelper(Version, AppContext, Callback);
         Intent intent = new Intent("org.opencv.engine.BIND");
@@ -44,7 +44,7 @@ class AsyncServiceHelper
 
     protected static final String TAG = "OpenCVManager/Helper";
     protected static final int MINIMUM_ENGINE_VERSION = 2;
-    protected OpenCVEngineInterface mEngineService;
+    //    protected OpenCVEngineInterface mEngineService;
     protected LoaderCallbackInterface mUserAppCallback;
     protected String mOpenCVersion;
     protected Context mAppContext;
@@ -72,8 +72,8 @@ class AsyncServiceHelper
     {
         if (!mServiceInstallationProgress)
         {
-                Log.d(TAG, "Request new service installation");
-                InstallCallbackInterface InstallQuery = new InstallCallbackInterface() {
+            Log.d(TAG, "Request new service installation");
+            InstallCallbackInterface InstallQuery = new InstallCallbackInterface() {
                 private LoaderCallbackInterface mUserAppCallback = Callback;
                 public String getPackageName()
                 {
@@ -140,7 +140,7 @@ class AsyncServiceHelper
                 }
                 public void wait_install()
                 {
-                     InstallServiceQuiet(AppContext);
+                    InstallServiceQuiet(AppContext);
                 }
             };
 
@@ -158,7 +158,7 @@ class AsyncServiceHelper
         public void onServiceConnected(ComponentName className, IBinder service)
         {
             Log.d(TAG, "Service connection created");
-            mEngineService = OpenCVEngineInterface.Stub.asInterface(service);
+            /*mEngineService = OpenCVEngineInterface.Stub.asInterface(service);
             if (null == mEngineService)
             {
                 Log.d(TAG, "OpenCV Manager Service connection fails. May be service was not installed?");
@@ -253,7 +253,7 @@ class AsyncServiceHelper
                                     Log.d(TAG, "Unbind from service");
                                     mAppContext.unbindService(mServiceConnection);
                                     Log.d(TAG, "Calling using callback");
-                                        mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INSTALL_CANCELED);
+                                    mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INSTALL_CANCELED);
                                 }
                                 public void wait_install() {
                                     Log.d(TAG, "Waiting for current installation");
@@ -282,7 +282,7 @@ class AsyncServiceHelper
                                         Log.d(TAG, "Calling using callback");
                                         mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INIT_FAILED);
                                     }
-                               }
+                                }
                             };
 
                             mUserAppCallback.onPackageInstall(InstallCallbackInterface.INSTALLATION_PROGRESS, WaitQuery);
@@ -328,12 +328,12 @@ class AsyncServiceHelper
                     Log.d(TAG, "Calling using callback");
                     mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INIT_FAILED);
                 }
-            }
+            }*/
         }
 
         public void onServiceDisconnected(ComponentName className)
         {
-            mEngineService = null;
+//            mEngineService = null;
         }
     };
 
