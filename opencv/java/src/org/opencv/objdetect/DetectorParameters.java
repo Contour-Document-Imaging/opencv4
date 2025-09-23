@@ -223,17 +223,39 @@ public class DetectorParameters {
 
 
     //
-    // C++: CornerRefineMethod DetectorParameters::cornerRefinementMethod
+    // C++: float DetectorParameters::minGroupDistance
     //
 
-    // Return type 'CornerRefineMethod' is not supported, skipping the function
+    public float get_minGroupDistance() {
+        return get_minGroupDistance_0(nativeObj);
+    }
+
+
+    //
+    // C++: void DetectorParameters::minGroupDistance
+    //
+
+    public void set_minGroupDistance(float minGroupDistance) {
+        set_minGroupDistance_0(nativeObj, minGroupDistance);
+    }
+
+
+    //
+    // C++: int DetectorParameters::cornerRefinementMethod
+    //
+
+    public int get_cornerRefinementMethod() {
+        return get_cornerRefinementMethod_0(nativeObj);
+    }
 
 
     //
     // C++: void DetectorParameters::cornerRefinementMethod
     //
 
-    // Unknown type 'CornerRefineMethod' (I), skipping the function
+    public void set_cornerRefinementMethod(int cornerRefinementMethod) {
+        set_cornerRefinementMethod_0(nativeObj, cornerRefinementMethod);
+    }
 
 
     //
@@ -251,6 +273,24 @@ public class DetectorParameters {
 
     public void set_cornerRefinementWinSize(int cornerRefinementWinSize) {
         set_cornerRefinementWinSize_0(nativeObj, cornerRefinementWinSize);
+    }
+
+
+    //
+    // C++: float DetectorParameters::relativeCornerRefinmentWinSize
+    //
+
+    public float get_relativeCornerRefinmentWinSize() {
+        return get_relativeCornerRefinmentWinSize_0(nativeObj);
+    }
+
+
+    //
+    // C++: void DetectorParameters::relativeCornerRefinmentWinSize
+    //
+
+    public void set_relativeCornerRefinmentWinSize(float relativeCornerRefinmentWinSize) {
+        set_relativeCornerRefinmentWinSize_0(nativeObj, relativeCornerRefinmentWinSize);
     }
 
 
@@ -684,11 +724,29 @@ public class DetectorParameters {
     // C++: void DetectorParameters::minMarkerDistanceRate
     private static native void set_minMarkerDistanceRate_0(long nativeObj, double minMarkerDistanceRate);
 
+    // C++: float DetectorParameters::minGroupDistance
+    private static native float get_minGroupDistance_0(long nativeObj);
+
+    // C++: void DetectorParameters::minGroupDistance
+    private static native void set_minGroupDistance_0(long nativeObj, float minGroupDistance);
+
+    // C++: int DetectorParameters::cornerRefinementMethod
+    private static native int get_cornerRefinementMethod_0(long nativeObj);
+
+    // C++: void DetectorParameters::cornerRefinementMethod
+    private static native void set_cornerRefinementMethod_0(long nativeObj, int cornerRefinementMethod);
+
     // C++: int DetectorParameters::cornerRefinementWinSize
     private static native int get_cornerRefinementWinSize_0(long nativeObj);
 
     // C++: void DetectorParameters::cornerRefinementWinSize
     private static native void set_cornerRefinementWinSize_0(long nativeObj, int cornerRefinementWinSize);
+
+    // C++: float DetectorParameters::relativeCornerRefinmentWinSize
+    private static native float get_relativeCornerRefinmentWinSize_0(long nativeObj);
+
+    // C++: void DetectorParameters::relativeCornerRefinmentWinSize
+    private static native void set_relativeCornerRefinmentWinSize_0(long nativeObj, float relativeCornerRefinmentWinSize);
 
     // C++: int DetectorParameters::cornerRefinementMaxIterations
     private static native int get_cornerRefinementMaxIterations_0(long nativeObj);

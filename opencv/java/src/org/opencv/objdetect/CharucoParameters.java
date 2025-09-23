@@ -18,6 +18,15 @@ public class CharucoParameters {
     public static CharucoParameters __fromPtr__(long addr) { return new CharucoParameters(addr); }
 
     //
+    // C++:   cv::aruco::CharucoParameters::CharucoParameters()
+    //
+
+    public CharucoParameters() {
+        nativeObj = CharucoParameters_0();
+    }
+
+
+    //
     // C++: Mat CharucoParameters::cameraMatrix
     //
 
@@ -89,12 +98,33 @@ public class CharucoParameters {
     }
 
 
+    //
+    // C++: bool CharucoParameters::checkMarkers
+    //
+
+    public boolean get_checkMarkers() {
+        return get_checkMarkers_0(nativeObj);
+    }
+
+
+    //
+    // C++: void CharucoParameters::checkMarkers
+    //
+
+    public void set_checkMarkers(boolean checkMarkers) {
+        set_checkMarkers_0(nativeObj, checkMarkers);
+    }
+
+
     @Override
     protected void finalize() throws Throwable {
         delete(nativeObj);
     }
 
 
+
+    // C++:   cv::aruco::CharucoParameters::CharucoParameters()
+    private static native long CharucoParameters_0();
 
     // C++: Mat CharucoParameters::cameraMatrix
     private static native long get_cameraMatrix_0(long nativeObj);
@@ -119,6 +149,12 @@ public class CharucoParameters {
 
     // C++: void CharucoParameters::tryRefineMarkers
     private static native void set_tryRefineMarkers_0(long nativeObj, boolean tryRefineMarkers);
+
+    // C++: bool CharucoParameters::checkMarkers
+    private static native boolean get_checkMarkers_0(long nativeObj);
+
+    // C++: void CharucoParameters::checkMarkers
+    private static native void set_checkMarkers_0(long nativeObj, boolean checkMarkers);
 
     // native support for java finalize()
     private static native void delete(long nativeObj);

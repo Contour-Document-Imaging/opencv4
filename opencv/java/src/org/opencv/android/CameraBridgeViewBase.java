@@ -1,5 +1,12 @@
 package org.opencv.android;
 
+import java.util.List;
+
+import org.opencv.R;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,14 +19,10 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import org.opencv.R;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
-
-import java.util.List;
+import android.view.WindowManager;
 
 /**
  * This is a basic class, implementing the interaction with Camera and OpenCV library.
@@ -89,6 +92,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         super.onAttachedToWindow();
         isInPortraitMode = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
+
     /**
      * Sets the camera index
      * @param cameraIndex new camera index
@@ -195,7 +199,92 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
          * This method returns single channel gray scale Mat with frame
          */
         public Mat gray();
+
+        public void release();
     };
+
+    public class RotatedCameraFrame implements CvCameraViewFrame {
+        @Override
+        public Mat gray() {
+            if (mRotation != 0) {
+                Core.rotate(mFrame.gray(), mGrayRotated, getCvRotationCode(mRotation));
+                return mGrayRotated;
+            } else {
+                return mFrame.gray();
+            }
+        }
+
+        @Override
+        public Mat rgba() {
+            if (mRotation != 0) {
+                Core.rotate(mFrame.rgba(), mRgbaRotated, getCvRotationCode(mRotation));
+                return mRgbaRotated;
+            } else {
+                return mFrame.rgba();
+            }
+        }
+
+        private int getCvRotationCode(int degrees) {
+            if  (degrees == 90) {
+                return Core.ROTATE_90_CLOCKWISE;
+            } else if (degrees == 180) {
+                return Core.ROTATE_180;
+            } else {
+                return Core.ROTATE_90_COUNTERCLOCKWISE;
+            }
+        }
+
+        public RotatedCameraFrame(CvCameraViewFrame frame, int rotation) {
+            super();
+            mFrame = frame;
+            mRgbaRotated = new Mat();
+            mGrayRotated = new Mat();
+            mRotation = rotation;
+        }
+
+        @Override
+        public void release() {
+            mRgbaRotated.release();
+            mGrayRotated.release();
+        }
+
+        public CvCameraViewFrame mFrame;
+        private Mat mRgbaRotated;
+        private Mat mGrayRotated;
+        private int mRotation;
+    };
+
+    /**
+     * Calculates how to rotate camera frame to match current screen orientation
+     */
+    protected int getFrameRotation(boolean cameraFacingFront, int cameraSensorOrientation) {
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        int screenOrientation = windowManager.getDefaultDisplay().getRotation();
+        int screenRotation = 0;
+        switch (screenOrientation) {
+            case Surface.ROTATION_0:
+                screenRotation = 0;
+                break;
+            case Surface.ROTATION_90:
+                screenRotation = 90;
+                break;
+            case Surface.ROTATION_180:
+                screenRotation = 180;
+                break;
+            case Surface.ROTATION_270:
+                screenRotation = 270;
+                break;
+        }
+
+        int frameRotation;
+        if (cameraFacingFront) {
+            frameRotation = (cameraSensorOrientation + screenRotation) % 360;
+        } else {
+            frameRotation = (cameraSensorOrientation - screenRotation + 360) % 360;
+        }
+
+        return frameRotation;
+    }
 
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
         Log.d(TAG, "call surfaceChanged event");
@@ -443,8 +532,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         if (!isPortraitMatrixInitialized) {
             mMatrix = new Matrix();
             mMatrix.preTranslate(getXTranslation(canvas), getYTranslation(canvas));
-            mMatrix.postRotate(90f, getPxTranslation(canvas), getPyTranslation(canvas));
-            float scale = (float) canvas.getWidth() / (float) mCacheBitmap.getHeight();
+            float scale = (float) canvas.getWidth() / (float) mCacheBitmap.getWidth();
             mMatrix.postScale(scale, scale, getPxTranslation(canvas), getPyTranslation(canvas));
             isPortraitMatrixInitialized = true;
         }
@@ -487,7 +575,6 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-
                 if(isInPortraitMode) {
                     initializePortraitMatrixIfNeeded(canvas);
                     canvas.drawBitmap(mCacheBitmap, mMatrix, null);

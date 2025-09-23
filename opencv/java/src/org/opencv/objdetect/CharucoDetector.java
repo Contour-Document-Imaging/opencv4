@@ -35,7 +35,7 @@ public class CharucoDetector extends Algorithm {
      * @param refineParams marker refine detection parameters
      */
     public CharucoDetector(CharucoBoard board, CharucoParameters charucoParams, DetectorParameters detectorParams, RefineParameters refineParams) {
-        super(CharucoDetector_0(board.nativeObj, charucoParams.nativeObj, detectorParams.nativeObj, refineParams.nativeObj));
+        super(CharucoDetector_0(board.getNativeObjAddr(), charucoParams.getNativeObjAddr(), detectorParams.getNativeObjAddr(), refineParams.getNativeObjAddr()));
     }
 
     /**
@@ -46,7 +46,7 @@ public class CharucoDetector extends Algorithm {
      * @param detectorParams marker detection parameters
      */
     public CharucoDetector(CharucoBoard board, CharucoParameters charucoParams, DetectorParameters detectorParams) {
-        super(CharucoDetector_1(board.nativeObj, charucoParams.nativeObj, detectorParams.nativeObj));
+        super(CharucoDetector_1(board.getNativeObjAddr(), charucoParams.getNativeObjAddr(), detectorParams.getNativeObjAddr()));
     }
 
     /**
@@ -56,7 +56,7 @@ public class CharucoDetector extends Algorithm {
      * @param charucoParams charuco detection parameters
      */
     public CharucoDetector(CharucoBoard board, CharucoParameters charucoParams) {
-        super(CharucoDetector_2(board.nativeObj, charucoParams.nativeObj));
+        super(CharucoDetector_2(board.getNativeObjAddr(), charucoParams.getNativeObjAddr()));
     }
 
     /**
@@ -65,7 +65,7 @@ public class CharucoDetector extends Algorithm {
      * @param board ChAruco board
      */
     public CharucoDetector(CharucoBoard board) {
-        super(CharucoDetector_3(board.nativeObj));
+        super(CharucoDetector_3(board.getNativeObjAddr()));
     }
 
 
@@ -83,7 +83,7 @@ public class CharucoDetector extends Algorithm {
     //
 
     public void setBoard(CharucoBoard board) {
-        setBoard_0(nativeObj, board.nativeObj);
+        setBoard_0(nativeObj, board.getNativeObjAddr());
     }
 
 
@@ -101,7 +101,7 @@ public class CharucoDetector extends Algorithm {
     //
 
     public void setCharucoParameters(CharucoParameters charucoParameters) {
-        setCharucoParameters_0(nativeObj, charucoParameters.nativeObj);
+        setCharucoParameters_0(nativeObj, charucoParameters.getNativeObjAddr());
     }
 
 
@@ -119,7 +119,7 @@ public class CharucoDetector extends Algorithm {
     //
 
     public void setDetectorParameters(DetectorParameters detectorParameters) {
-        setDetectorParameters_0(nativeObj, detectorParameters.nativeObj);
+        setDetectorParameters_0(nativeObj, detectorParameters.getNativeObjAddr());
     }
 
 
@@ -137,7 +137,7 @@ public class CharucoDetector extends Algorithm {
     //
 
     public void setRefineParameters(RefineParameters refineParameters) {
-        setRefineParameters_0(nativeObj, refineParameters.nativeObj);
+        setRefineParameters_0(nativeObj, refineParameters.getNativeObjAddr());
     }
 
 
@@ -166,6 +166,9 @@ public class CharucoDetector extends Algorithm {
      * If camera parameters are provided, the process is based in an approximated pose estimation, else it is based on local homography.
      * Only visible corners are returned. For each corner, its corresponding identifier is also returned in charucoIds.
      * SEE: findChessboardCorners
+     * <b>Note:</b> After OpenCV 4.6.0, there was an incompatible change in the ChArUco pattern generation algorithm for even row counts.
+     * Use cv::aruco::CharucoBoard::setLegacyPattern() to ensure compatibility with patterns created using OpenCV versions prior to 4.6.0.
+     * For more information, see the issue: https://github.com/opencv/opencv/issues/23152
      */
     public void detectBoard(Mat image, Mat charucoCorners, Mat charucoIds, List<Mat> markerCorners, Mat markerIds) {
         Mat markerCorners_mat = Converters.vector_Mat_to_Mat(markerCorners);
@@ -194,6 +197,9 @@ public class CharucoDetector extends Algorithm {
      * If camera parameters are provided, the process is based in an approximated pose estimation, else it is based on local homography.
      * Only visible corners are returned. For each corner, its corresponding identifier is also returned in charucoIds.
      * SEE: findChessboardCorners
+     * <b>Note:</b> After OpenCV 4.6.0, there was an incompatible change in the ChArUco pattern generation algorithm for even row counts.
+     * Use cv::aruco::CharucoBoard::setLegacyPattern() to ensure compatibility with patterns created using OpenCV versions prior to 4.6.0.
+     * For more information, see the issue: https://github.com/opencv/opencv/issues/23152
      */
     public void detectBoard(Mat image, Mat charucoCorners, Mat charucoIds, List<Mat> markerCorners) {
         Mat markerCorners_mat = Converters.vector_Mat_to_Mat(markerCorners);
@@ -221,6 +227,9 @@ public class CharucoDetector extends Algorithm {
      * If camera parameters are provided, the process is based in an approximated pose estimation, else it is based on local homography.
      * Only visible corners are returned. For each corner, its corresponding identifier is also returned in charucoIds.
      * SEE: findChessboardCorners
+     * <b>Note:</b> After OpenCV 4.6.0, there was an incompatible change in the ChArUco pattern generation algorithm for even row counts.
+     * Use cv::aruco::CharucoBoard::setLegacyPattern() to ensure compatibility with patterns created using OpenCV versions prior to 4.6.0.
+     * For more information, see the issue: https://github.com/opencv/opencv/issues/23152
      */
     public void detectBoard(Mat image, Mat charucoCorners, Mat charucoIds) {
         detectBoard_2(nativeObj, image.nativeObj, charucoCorners.nativeObj, charucoIds.nativeObj);
@@ -228,7 +237,7 @@ public class CharucoDetector extends Algorithm {
 
 
     //
-    // C++:  void cv::aruco::CharucoDetector::detectDiamonds(Mat image, vector_Mat& diamondCorners, Mat& diamondIds, vector_Mat& markerCorners = vector_Mat(), vector_Mat& markerIds = vector_Mat())
+    // C++:  void cv::aruco::CharucoDetector::detectDiamonds(Mat image, vector_Mat& diamondCorners, Mat& diamondIds, vector_Mat& markerCorners = vector_Mat(), Mat& markerIds = Mat())
     //
 
     /**
@@ -251,17 +260,14 @@ public class CharucoDetector extends Algorithm {
      * are provided, the diamond search is based on reprojection. If not, diamond search is based on
      * homography. Homography is faster than reprojection, but less accurate.
      */
-    public void detectDiamonds(Mat image, List<Mat> diamondCorners, Mat diamondIds, List<Mat> markerCorners, List<Mat> markerIds) {
+    public void detectDiamonds(Mat image, List<Mat> diamondCorners, Mat diamondIds, List<Mat> markerCorners, Mat markerIds) {
         Mat diamondCorners_mat = new Mat();
         Mat markerCorners_mat = Converters.vector_Mat_to_Mat(markerCorners);
-        Mat markerIds_mat = Converters.vector_Mat_to_Mat(markerIds);
-        detectDiamonds_0(nativeObj, image.nativeObj, diamondCorners_mat.nativeObj, diamondIds.nativeObj, markerCorners_mat.nativeObj, markerIds_mat.nativeObj);
+        detectDiamonds_0(nativeObj, image.nativeObj, diamondCorners_mat.nativeObj, diamondIds.nativeObj, markerCorners_mat.nativeObj, markerIds.nativeObj);
         Converters.Mat_to_vector_Mat(diamondCorners_mat, diamondCorners);
         diamondCorners_mat.release();
         Converters.Mat_to_vector_Mat(markerCorners_mat, markerCorners);
         markerCorners_mat.release();
-        Converters.Mat_to_vector_Mat(markerIds_mat, markerIds);
-        markerIds_mat.release();
     }
 
     /**
@@ -361,8 +367,8 @@ public class CharucoDetector extends Algorithm {
     private static native void detectBoard_1(long nativeObj, long image_nativeObj, long charucoCorners_nativeObj, long charucoIds_nativeObj, long markerCorners_mat_nativeObj);
     private static native void detectBoard_2(long nativeObj, long image_nativeObj, long charucoCorners_nativeObj, long charucoIds_nativeObj);
 
-    // C++:  void cv::aruco::CharucoDetector::detectDiamonds(Mat image, vector_Mat& diamondCorners, Mat& diamondIds, vector_Mat& markerCorners = vector_Mat(), vector_Mat& markerIds = vector_Mat())
-    private static native void detectDiamonds_0(long nativeObj, long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj, long markerCorners_mat_nativeObj, long markerIds_mat_nativeObj);
+    // C++:  void cv::aruco::CharucoDetector::detectDiamonds(Mat image, vector_Mat& diamondCorners, Mat& diamondIds, vector_Mat& markerCorners = vector_Mat(), Mat& markerIds = Mat())
+    private static native void detectDiamonds_0(long nativeObj, long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj, long markerCorners_mat_nativeObj, long markerIds_nativeObj);
     private static native void detectDiamonds_1(long nativeObj, long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj, long markerCorners_mat_nativeObj);
     private static native void detectDiamonds_2(long nativeObj, long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj);
 

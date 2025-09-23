@@ -41,7 +41,7 @@ public class CharucoBoard extends Board {
      * The first markers in the dictionary are used to fill the white chessboard squares.
      */
     public CharucoBoard(Size size, float squareLength, float markerLength, Dictionary dictionary, Mat ids) {
-        super(CharucoBoard_0(size.width, size.height, squareLength, markerLength, dictionary.nativeObj, ids.nativeObj));
+        super(CharucoBoard_0(size.width, size.height, squareLength, markerLength, dictionary.getNativeObjAddr(), ids.nativeObj));
     }
 
     /**
@@ -54,7 +54,36 @@ public class CharucoBoard extends Board {
      * The first markers in the dictionary are used to fill the white chessboard squares.
      */
     public CharucoBoard(Size size, float squareLength, float markerLength, Dictionary dictionary) {
-        super(CharucoBoard_1(size.width, size.height, squareLength, markerLength, dictionary.nativeObj));
+        super(CharucoBoard_1(size.width, size.height, squareLength, markerLength, dictionary.getNativeObjAddr()));
+    }
+
+
+    //
+    // C++:  void cv::aruco::CharucoBoard::setLegacyPattern(bool legacyPattern)
+    //
+
+    /**
+     * set legacy chessboard pattern.
+     *
+     * Legacy setting creates chessboard patterns starting with a white box in the upper left corner
+     * if there is an even row count of chessboard boxes, otherwise it starts with a black box.
+     * This setting ensures compatibility to patterns created with OpenCV versions prior OpenCV 4.6.0.
+     * See https://github.com/opencv/opencv/issues/23152.
+     *
+     * Default value: false.
+     * @param legacyPattern automatically generated
+     */
+    public void setLegacyPattern(boolean legacyPattern) {
+        setLegacyPattern_0(nativeObj, legacyPattern);
+    }
+
+
+    //
+    // C++:  bool cv::aruco::CharucoBoard::getLegacyPattern()
+    //
+
+    public boolean getLegacyPattern() {
+        return getLegacyPattern_0(nativeObj);
     }
 
 
@@ -129,6 +158,12 @@ public class CharucoBoard extends Board {
     // C++:   cv::aruco::CharucoBoard::CharucoBoard(Size size, float squareLength, float markerLength, Dictionary dictionary, Mat ids = Mat())
     private static native long CharucoBoard_0(double size_width, double size_height, float squareLength, float markerLength, long dictionary_nativeObj, long ids_nativeObj);
     private static native long CharucoBoard_1(double size_width, double size_height, float squareLength, float markerLength, long dictionary_nativeObj);
+
+    // C++:  void cv::aruco::CharucoBoard::setLegacyPattern(bool legacyPattern)
+    private static native void setLegacyPattern_0(long nativeObj, boolean legacyPattern);
+
+    // C++:  bool cv::aruco::CharucoBoard::getLegacyPattern()
+    private static native boolean getLegacyPattern_0(long nativeObj);
 
     // C++:  Size cv::aruco::CharucoBoard::getChessboardSize()
     private static native double[] getChessboardSize_0(long nativeObj);

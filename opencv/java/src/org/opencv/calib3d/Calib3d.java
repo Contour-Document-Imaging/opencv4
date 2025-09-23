@@ -49,6 +49,7 @@ public class Calib3d {
             CALIB_CB_ACCURACY = 32,
             CALIB_CB_LARGER = 64,
             CALIB_CB_MARKER = 128,
+            CALIB_CB_PLAIN = 256,
             CALIB_CB_SYMMETRIC_GRID = 1,
             CALIB_CB_ASYMMETRIC_GRID = 2,
             CALIB_CB_CLUSTERING = 4,
@@ -123,6 +124,14 @@ public class Calib3d {
             NEIGH_FLANN_KNN = 0,
             NEIGH_GRID = 1,
             NEIGH_FLANN_RADIUS = 2;
+
+
+    // C++: enum PolishingMethod (cv.PolishingMethod)
+    public static final int
+            NONE_POLISHER = 0,
+            LSQ_POLISHER = 1,
+            MAGSAC = 2,
+            COV_POLISHER = 3;
 
 
     // C++: enum RobotWorldHandEyeCalibrationMethod (cv.RobotWorldHandEyeCalibrationMethod)
@@ -281,6 +290,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum allowed reprojection error to treat a point pair as an inlier
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
@@ -290,8 +301,6 @@ public class Calib3d {
      * mask values are ignored.
      * @param maxIters The maximum number of RANSAC iterations.
      * @param confidence Confidence level, between 0 and 1.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -324,8 +333,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -358,6 +367,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum allowed reprojection error to treat a point pair as an inlier
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
@@ -366,8 +377,6 @@ public class Calib3d {
      * @param mask Optional output mask set by a robust method ( RANSAC or LMeDS ). Note that the input
      * mask values are ignored.
      * @param maxIters The maximum number of RANSAC iterations.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -400,8 +409,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -434,6 +443,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum allowed reprojection error to treat a point pair as an inlier
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
@@ -441,8 +452,6 @@ public class Calib3d {
      * it usually makes sense to set this parameter somewhere in the range of 1 to 10.
      * @param mask Optional output mask set by a robust method ( RANSAC or LMeDS ). Note that the input
      * mask values are ignored.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -475,8 +484,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -509,14 +518,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum allowed reprojection error to treat a point pair as an inlier
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
      * then the point \(i\) is considered as an outlier. If srcPoints and dstPoints are measured in pixels,
      * it usually makes sense to set this parameter somewhere in the range of 1 to 10.
      * mask values are ignored.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -549,8 +558,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -583,13 +592,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
      * then the point \(i\) is considered as an outlier. If srcPoints and dstPoints are measured in pixels,
      * it usually makes sense to set this parameter somewhere in the range of 1 to 10.
      * mask values are ignored.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -622,8 +631,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -655,13 +664,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: RHO - PROSAC-based robust method
+     *   </li>
+     * </ul>
      * (used in the RANSAC and RHO methods only). That is, if
      * \(\| \texttt{dstPoints} _i -  \texttt{convertPointsHomogeneous} ( \texttt{H} \cdot \texttt{srcPoints} _i) \|_2  &gt;  \texttt{ransacReprojThreshold}\)
      * then the point \(i\) is considered as an outlier. If srcPoints and dstPoints are measured in pixels,
      * it usually makes sense to set this parameter somewhere in the range of 1 to 10.
      * mask values are ignored.
-     *   </li>
-     * </ul>
      *
      * The function finds and returns the perspective transformation \(H\) between the source and the
      * destination planes:
@@ -694,8 +703,8 @@ public class Calib3d {
      * noise is rather small, use the default method (method=0).
      *
      * The function is used to find initial intrinsic and extrinsic matrices. Homography matrix is
-     * determined up to a scale. Thus, it is normalized so that \(h_{33}=1\). Note that whenever an \(H\) matrix
-     * cannot be estimated, an empty one will be returned.
+     * determined up to a scale. If \(h_{33}\) is non-zero, the matrix is normalized so that \(h_{33}=1\).
+     * <b>Note:</b> Whenever an \(H\) matrix cannot be estimated, an empty one will be returned.
      *
      * SEE:
      * getAffineTransform, estimateAffine2D, estimateAffinePartial2D, getPerspectiveTransform, warpPerspective,
@@ -716,7 +725,7 @@ public class Calib3d {
     public static Mat findHomography(MatOfPoint2f srcPoints, MatOfPoint2f dstPoints, Mat mask, UsacParams params) {
         Mat srcPoints_mat = srcPoints;
         Mat dstPoints_mat = dstPoints;
-        return new Mat(findHomography_6(srcPoints_mat.nativeObj, dstPoints_mat.nativeObj, mask.nativeObj, params.nativeObj));
+        return new Mat(findHomography_6(srcPoints_mat.nativeObj, dstPoints_mat.nativeObj, mask.nativeObj, params.getNativeObjAddr()));
     }
 
 
@@ -741,7 +750,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and the three Euler angles in
      * degrees (as the return value) that could be used in OpenGL. Note, there is always more than one
      * sequence of rotations about the three principal axes that results in the same orientation of an
-     * object, e.g. see CITE: Slabaugh . Returned tree rotation matrices and corresponding three Euler angles
+     * object, e.g. see CITE: Slabaugh . Returned three rotation matrices and corresponding three Euler angles
      * are only one of the possible solutions.
      * @return automatically generated
      */
@@ -765,7 +774,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and the three Euler angles in
      * degrees (as the return value) that could be used in OpenGL. Note, there is always more than one
      * sequence of rotations about the three principal axes that results in the same orientation of an
-     * object, e.g. see CITE: Slabaugh . Returned tree rotation matrices and corresponding three Euler angles
+     * object, e.g. see CITE: Slabaugh . Returned three rotation matrices and corresponding three Euler angles
      * are only one of the possible solutions.
      * @return automatically generated
      */
@@ -788,7 +797,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and the three Euler angles in
      * degrees (as the return value) that could be used in OpenGL. Note, there is always more than one
      * sequence of rotations about the three principal axes that results in the same orientation of an
-     * object, e.g. see CITE: Slabaugh . Returned tree rotation matrices and corresponding three Euler angles
+     * object, e.g. see CITE: Slabaugh . Returned three rotation matrices and corresponding three Euler angles
      * are only one of the possible solutions.
      * @return automatically generated
      */
@@ -810,7 +819,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and the three Euler angles in
      * degrees (as the return value) that could be used in OpenGL. Note, there is always more than one
      * sequence of rotations about the three principal axes that results in the same orientation of an
-     * object, e.g. see CITE: Slabaugh . Returned tree rotation matrices and corresponding three Euler angles
+     * object, e.g. see CITE: Slabaugh . Returned three rotation matrices and corresponding three Euler angles
      * are only one of the possible solutions.
      * @return automatically generated
      */
@@ -842,7 +851,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and three Euler angles that could
      * be used in OpenGL. Note, there is always more than one sequence of rotations about the three
      * principal axes that results in the same orientation of an object, e.g. see CITE: Slabaugh . Returned
-     * tree rotation matrices and corresponding three Euler angles are only one of the possible solutions.
+     * three rotation matrices and corresponding three Euler angles are only one of the possible solutions.
      *
      * The function is based on #RQDecomp3x3 .
      */
@@ -868,7 +877,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and three Euler angles that could
      * be used in OpenGL. Note, there is always more than one sequence of rotations about the three
      * principal axes that results in the same orientation of an object, e.g. see CITE: Slabaugh . Returned
-     * tree rotation matrices and corresponding three Euler angles are only one of the possible solutions.
+     * three rotation matrices and corresponding three Euler angles are only one of the possible solutions.
      *
      * The function is based on #RQDecomp3x3 .
      */
@@ -893,7 +902,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and three Euler angles that could
      * be used in OpenGL. Note, there is always more than one sequence of rotations about the three
      * principal axes that results in the same orientation of an object, e.g. see CITE: Slabaugh . Returned
-     * tree rotation matrices and corresponding three Euler angles are only one of the possible solutions.
+     * three rotation matrices and corresponding three Euler angles are only one of the possible solutions.
      *
      * The function is based on #RQDecomp3x3 .
      */
@@ -917,7 +926,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and three Euler angles that could
      * be used in OpenGL. Note, there is always more than one sequence of rotations about the three
      * principal axes that results in the same orientation of an object, e.g. see CITE: Slabaugh . Returned
-     * tree rotation matrices and corresponding three Euler angles are only one of the possible solutions.
+     * three rotation matrices and corresponding three Euler angles are only one of the possible solutions.
      *
      * The function is based on #RQDecomp3x3 .
      */
@@ -940,7 +949,7 @@ public class Calib3d {
      * It optionally returns three rotation matrices, one for each axis, and three Euler angles that could
      * be used in OpenGL. Note, there is always more than one sequence of rotations about the three
      * principal axes that results in the same orientation of an object, e.g. see CITE: Slabaugh . Returned
-     * tree rotation matrices and corresponding three Euler angles are only one of the possible solutions.
+     * three rotation matrices and corresponding three Euler angles are only one of the possible solutions.
      *
      * The function is based on #RQDecomp3x3 .
      */
@@ -1377,7 +1386,9 @@ public class Calib3d {
     //
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences:
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1490,11 +1501,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
-     *   <ul>
-     *     <li>
+     *   <li>
      *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
-     *     </li>
-     *   </ul>
      *   </li>
      * </ul>
      * @return automatically generated
@@ -1507,7 +1515,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences:
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1619,11 +1629,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
-     *   <ul>
-     *     <li>
+     *   <li>
      *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
-     *     </li>
-     *   </ul>
      *   </li>
      * </ul>
      * @return automatically generated
@@ -1636,7 +1643,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences:
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1747,11 +1756,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
-     *   <ul>
-     *     <li>
+     *   <li>
      *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
-     *     </li>
-     *   </ul>
      *   </li>
      * </ul>
      * @return automatically generated
@@ -1769,7 +1775,9 @@ public class Calib3d {
     //
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1804,8 +1812,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -1834,7 +1842,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1868,8 +1878,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -1898,7 +1908,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1931,8 +1943,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -1961,7 +1973,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -1993,8 +2007,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -2023,7 +2037,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2054,8 +2070,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -2084,7 +2100,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2114,8 +2132,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -2144,7 +2162,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences using the RANSAC scheme to deal with bad matches.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2173,8 +2193,8 @@ public class Calib3d {
      * <b>Note:</b>
      * <ul>
      *   <li>
-     *       An example of how to use solvePNPRansac for object detection can be found at
-     *         opencv_source_code/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/
+     *       An example of how to use solvePnPRansac for object detection can be found at
+     *         REF: tutorial_real_time_pose
      *   </li>
      *   <li>
      *       The default method used to estimate the camera pose for the Minimal Sample Sets step
@@ -2211,7 +2231,7 @@ public class Calib3d {
         Mat objectPoints_mat = objectPoints;
         Mat imagePoints_mat = imagePoints;
         Mat distCoeffs_mat = distCoeffs;
-        return solvePnPRansac_7(objectPoints_mat.nativeObj, imagePoints_mat.nativeObj, cameraMatrix.nativeObj, distCoeffs_mat.nativeObj, rvec.nativeObj, tvec.nativeObj, inliers.nativeObj, params.nativeObj);
+        return solvePnPRansac_7(objectPoints_mat.nativeObj, imagePoints_mat.nativeObj, cameraMatrix.nativeObj, distCoeffs_mat.nativeObj, rvec.nativeObj, tvec.nativeObj, inliers.nativeObj, params.getNativeObjAddr());
     }
 
     public static boolean solvePnPRansac(MatOfPoint3f objectPoints, MatOfPoint2f imagePoints, Mat cameraMatrix, MatOfDouble distCoeffs, Mat rvec, Mat tvec, Mat inliers) {
@@ -2227,7 +2247,9 @@ public class Calib3d {
     //
 
     /**
-     * Finds an object pose from 3 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from <b>3</b> 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2435,7 +2457,9 @@ public class Calib3d {
     //
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2556,6 +2580,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -2572,7 +2598,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2692,6 +2720,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -2708,7 +2738,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2827,6 +2859,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -2843,7 +2877,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -2961,6 +2997,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -2977,7 +3015,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -3094,6 +3134,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -3110,7 +3152,9 @@ public class Calib3d {
     }
 
     /**
-     * Finds an object pose from 3D-2D point correspondences.
+     * Finds an object pose \( {}^{c}\mathbf{T}_o \) from 3D-2D point correspondences.
+     *
+     * ![Perspective projection, from object to camera frame](pics/pinhole_homogeneous_transformation.png){ width=50% }
      *
      * SEE: REF: calib3d_solvePnP
      *
@@ -3226,6 +3270,8 @@ public class Calib3d {
      *           point 3: [-squareLength / 2, -squareLength / 2, 0]
      *     </li>
      *   </ul>
+     *   <li>
+     *       With REF: SOLVEPNP_SQPNP input points must be &gt;= 3
      *   </li>
      * </ul>
      * @return automatically generated
@@ -3326,6 +3372,12 @@ public class Calib3d {
      * and shortcut the call if none is found. This can drastically speed up the call in the
      * degenerate condition when no chessboard is observed.
      *   </li>
+     *   <li>
+     *    REF: CALIB_CB_PLAIN All other flags are ignored. The input image is taken as is.
+     * No image processing is done to improve to find the checkerboard. This has the effect of speeding up the
+     * execution of the function but could lead to not recognizing the checkerboard if the image
+     * is not previously binarized in the appropriate manner.
+     *   </li>
      * </ul>
      *
      * The function attempts to determine whether the input image is a view of the chessboard pattern and
@@ -3360,7 +3412,8 @@ public class Calib3d {
      * border and the background is dark, the outer black squares cannot be segmented properly and so the
      * square grouping and ordering algorithm fails.
      *
-     * Use gen_pattern.py (REF: tutorial_camera_calibration_pattern) to create checkerboard.
+     * Use the {@code gen_pattern.py} Python script (REF: tutorial_camera_calibration_pattern)
+     * to create the desired checkerboard pattern.
      * @return automatically generated
      */
     public static boolean findChessboardCorners(Mat image, Size patternSize, MatOfPoint2f corners, int flags) {
@@ -3393,6 +3446,12 @@ public class Calib3d {
      * and shortcut the call if none is found. This can drastically speed up the call in the
      * degenerate condition when no chessboard is observed.
      *   </li>
+     *   <li>
+     *    REF: CALIB_CB_PLAIN All other flags are ignored. The input image is taken as is.
+     * No image processing is done to improve to find the checkerboard. This has the effect of speeding up the
+     * execution of the function but could lead to not recognizing the checkerboard if the image
+     * is not previously binarized in the appropriate manner.
+     *   </li>
      * </ul>
      *
      * The function attempts to determine whether the input image is a view of the chessboard pattern and
@@ -3427,7 +3486,8 @@ public class Calib3d {
      * border and the background is dark, the outer black squares cannot be segmented properly and so the
      * square grouping and ordering algorithm fails.
      *
-     * Use gen_pattern.py (REF: tutorial_camera_calibration_pattern) to create checkerboard.
+     * Use the {@code gen_pattern.py} Python script (REF: tutorial_camera_calibration_pattern)
+     * to create the desired checkerboard pattern.
      * @return automatically generated
      */
     public static boolean findChessboardCorners(Mat image, Size patternSize, MatOfPoint2f corners) {
@@ -3473,9 +3533,11 @@ public class Calib3d {
      *   <li>
      *    REF: CALIB_CB_MARKER The detected pattern must have a marker (see description).
      * This should be used if an accurate camera calibration is required.
+     *   </li>
+     * </ul>
      * @param meta Optional output arrray of detected corners (CV_8UC1 and size = cv::Size(columns,rows)).
      * Each entry stands for one corner of the pattern and can have one of the following values:
-     *   </li>
+     * <ul>
      *   <li>
      *    0 = no meta data attached
      *   </li>
@@ -3519,8 +3581,9 @@ public class Calib3d {
      * a sample checkerboard optimized for the detection. However, any other checkerboard
      * can be used as well.
      *
-     * Use gen_pattern.py (REF: tutorial_camera_calibration_pattern) to create checkerboard.
-     * ![Checkerboard](pics/checkerboard_radon.png)
+     * Use the {@code gen_pattern.py} Python script (REF: tutorial_camera_calibration_pattern)
+     * to create the corresponding checkerboard pattern:
+     * \image html pics/checkerboard_radon.png width=60%
      * @return automatically generated
      */
     public static boolean findChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, int flags, Mat meta) {
@@ -3870,9 +3933,9 @@ public class Calib3d {
      *    REF: CALIB_FIX_TAUX_TAUY The coefficients of the tilted sensor model are not changed during
      * the optimization. If REF: CALIB_USE_INTRINSIC_GUESS is set, the coefficient from the
      * supplied distCoeffs matrix is used. Otherwise, it is set to 0.
-     * @param criteria Termination criteria for the iterative optimization algorithm.
      *   </li>
      * </ul>
+     * @param criteria Termination criteria for the iterative optimization algorithm.
      *
      * @return the overall RMS re-projection error.
      *
@@ -3918,6 +3981,10 @@ public class Calib3d {
      *     \(c_y\) very far from the image center, and/or large differences between \(f_x\) and
      *     \(f_y\) (ratios of 10:1 or more)), then you are probably using patternSize=cvSize(rows,cols)
      *     instead of using patternSize=cvSize(cols,rows) in REF: findChessboardCorners.
+     *
+     * <b>Note:</b>
+     *     The function may throw exceptions, if unsupported combination of parameters is provided or
+     *     the system is underconstrained.
      *
      * SEE:
      *    calibrateCameraRO, findChessboardCorners, solvePnP, initCameraMatrix2D, stereoCalibrate,
@@ -4084,6 +4151,10 @@ public class Calib3d {
      *     \(f_y\) (ratios of 10:1 or more)), then you are probably using patternSize=cvSize(rows,cols)
      *     instead of using patternSize=cvSize(cols,rows) in REF: findChessboardCorners.
      *
+     * <b>Note:</b>
+     *     The function may throw exceptions, if unsupported combination of parameters is provided or
+     *     the system is underconstrained.
+     *
      * SEE:
      *    calibrateCameraRO, findChessboardCorners, solvePnP, initCameraMatrix2D, stereoCalibrate,
      *    undistort
@@ -4247,6 +4318,10 @@ public class Calib3d {
      *     \(c_y\) very far from the image center, and/or large differences between \(f_x\) and
      *     \(f_y\) (ratios of 10:1 or more)), then you are probably using patternSize=cvSize(rows,cols)
      *     instead of using patternSize=cvSize(cols,rows) in REF: findChessboardCorners.
+     *
+     * <b>Note:</b>
+     *     The function may throw exceptions, if unsupported combination of parameters is provided or
+     *     the system is underconstrained.
      *
      * SEE:
      *    calibrateCameraRO, findChessboardCorners, solvePnP, initCameraMatrix2D, stereoCalibrate,
@@ -4717,9 +4792,9 @@ public class Calib3d {
      *    REF: CALIB_FIX_TAUX_TAUY The coefficients of the tilted sensor model are not changed during
      * the optimization. If REF: CALIB_USE_INTRINSIC_GUESS is set, the coefficient from the
      * supplied distCoeffs matrix is used. Otherwise, it is set to 0.
-     * @param criteria Termination criteria for the iterative optimization algorithm.
      *   </li>
      * </ul>
+     * @param criteria Termination criteria for the iterative optimization algorithm.
      *
      * The function estimates the transformation between two cameras making a stereo pair. If one computes
      * the poses of an object relative to the first camera and to the second camera,
@@ -6989,6 +7064,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: FM_LMEDS for the LMedS algorithm. \(N \ge 8\)
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Parameter used only for RANSAC. It is the maximum distance from a point to an epipolar
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
@@ -6997,8 +7074,6 @@ public class Calib3d {
      * of confidence (probability) that the estimated matrix is correct.
      * @param mask optional output mask
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * The epipolar geometry is described by the following equation:
      *
@@ -7058,6 +7133,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: FM_LMEDS for the LMedS algorithm. \(N \ge 8\)
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Parameter used only for RANSAC. It is the maximum distance from a point to an epipolar
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
@@ -7065,8 +7142,6 @@ public class Calib3d {
      * @param confidence Parameter used for the RANSAC and LMedS methods only. It specifies a desirable level
      * of confidence (probability) that the estimated matrix is correct.
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * The epipolar geometry is described by the following equation:
      *
@@ -7150,7 +7225,7 @@ public class Calib3d {
     public static Mat findFundamentalMat(MatOfPoint2f points1, MatOfPoint2f points2, Mat mask, UsacParams params) {
         Mat points1_mat = points1;
         Mat points2_mat = points2;
-        return new Mat(findFundamentalMat_7(points1_mat.nativeObj, points2_mat.nativeObj, mask.nativeObj, params.nativeObj));
+        return new Mat(findFundamentalMat_7(points1_mat.nativeObj, points2_mat.nativeObj, mask.nativeObj, params.getNativeObjAddr()));
     }
 
 
@@ -7163,13 +7238,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * @param method Method for computing an essential matrix.
      * <ul>
      *   <li>
@@ -7177,6 +7252,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -7186,8 +7263,6 @@ public class Calib3d {
      * @param mask Output array of N elements, every element of which is set to 0 for outliers and to 1
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7208,13 +7283,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * @param method Method for computing an essential matrix.
      * <ul>
      *   <li>
@@ -7222,6 +7297,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -7230,8 +7307,6 @@ public class Calib3d {
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7252,13 +7327,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * @param method Method for computing an essential matrix.
      * <ul>
      *   <li>
@@ -7266,6 +7341,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -7273,8 +7350,6 @@ public class Calib3d {
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7295,13 +7370,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * @param method Method for computing an essential matrix.
      * <ul>
      *   <li>
@@ -7309,14 +7384,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7337,13 +7412,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * @param method Method for computing an essential matrix.
      * <ul>
      *   <li>
@@ -7351,13 +7426,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7378,26 +7453,26 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
+     * @param points2 Array of the second image points of the same size and format as points1.
      * @param cameraMatrix Camera intrinsic matrix \(\cameramatrix{A}\) .
      * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera intrinsic matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera intrinsic matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
+     * same camera intrinsic matrix. If this assumption does not hold for your use case, use another
+     * function overload or #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image
+     * points to normalized image coordinates, which are valid for the identity camera intrinsic matrix.
+     * When passing these coordinates, pass the identity matrix for this parameter.
      * <ul>
      *   <li>
      *    REF: RANSAC for the RANSAC algorithm.
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7433,6 +7508,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
@@ -7442,8 +7519,6 @@ public class Calib3d {
      * @param mask Output array of N elements, every element of which is set to 0 for outliers and to 1
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7475,6 +7550,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
@@ -7483,8 +7560,6 @@ public class Calib3d {
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
      * @param maxIters The maximum number of robust method iterations.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7516,6 +7591,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
@@ -7523,8 +7600,6 @@ public class Calib3d {
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7556,14 +7631,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7595,13 +7670,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7632,13 +7707,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7668,13 +7743,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7703,13 +7778,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * confidence (probability) that the estimated matrix is correct.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function differs from the one above that it computes camera intrinsic matrix from focal length and
      * principal point:
@@ -7736,23 +7811,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
-     * @param cameraMatrix1 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param cameraMatrix2 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param distCoeffs1 Input vector of distortion coefficients
+     * @param points2 Array of the second image points of the same size and format as points1.
+     * @param cameraMatrix1 Camera matrix for the first camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param cameraMatrix2 Camera matrix for the second camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param distCoeffs1 Input vector of distortion coefficients for the first camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
-     * @param distCoeffs2 Input vector of distortion coefficients
+     * @param distCoeffs2 Input vector of distortion coefficients for the second camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
      * @param method Method for computing an essential matrix.
@@ -7762,6 +7827,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -7770,8 +7837,6 @@ public class Calib3d {
      * point localization, image resolution, and the image noise.
      * @param mask Output array of N elements, every element of which is set to 0 for outliers and to 1
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7792,23 +7857,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
-     * @param cameraMatrix1 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param cameraMatrix2 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param distCoeffs1 Input vector of distortion coefficients
+     * @param points2 Array of the second image points of the same size and format as points1.
+     * @param cameraMatrix1 Camera matrix for the first camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param cameraMatrix2 Camera matrix for the second camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param distCoeffs1 Input vector of distortion coefficients for the first camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
-     * @param distCoeffs2 Input vector of distortion coefficients
+     * @param distCoeffs2 Input vector of distortion coefficients for the second camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
      * @param method Method for computing an essential matrix.
@@ -7818,6 +7873,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -7825,8 +7882,6 @@ public class Calib3d {
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7847,23 +7902,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
-     * @param cameraMatrix1 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param cameraMatrix2 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param distCoeffs1 Input vector of distortion coefficients
+     * @param points2 Array of the second image points of the same size and format as points1.
+     * @param cameraMatrix1 Camera matrix for the first camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param cameraMatrix2 Camera matrix for the second camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param distCoeffs1 Input vector of distortion coefficients for the first camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
-     * @param distCoeffs2 Input vector of distortion coefficients
+     * @param distCoeffs2 Input vector of distortion coefficients for the second camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
      * @param method Method for computing an essential matrix.
@@ -7873,14 +7918,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7901,23 +7946,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
-     * @param cameraMatrix1 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param cameraMatrix2 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param distCoeffs1 Input vector of distortion coefficients
+     * @param points2 Array of the second image points of the same size and format as points1.
+     * @param cameraMatrix1 Camera matrix for the first camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param cameraMatrix2 Camera matrix for the second camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param distCoeffs1 Input vector of distortion coefficients for the first camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
-     * @param distCoeffs2 Input vector of distortion coefficients
+     * @param distCoeffs2 Input vector of distortion coefficients for the second camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
      * @param method Method for computing an essential matrix.
@@ -7927,13 +7962,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -7954,23 +7989,13 @@ public class Calib3d {
      *
      * @param points1 Array of N (N &gt;= 5) 2D points from the first image. The point coordinates should
      * be floating-point (single or double precision).
-     * @param points2 Array of the second image points of the same size and format as points1 .
-     * @param cameraMatrix1 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param cameraMatrix2 Camera matrix \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
-     * Note that this function assumes that points1 and points2 are feature points from cameras with the
-     * same camera matrix. If this assumption does not hold for your use case, use
-     * #undistortPoints with {@code P = cv::NoArray()} for both cameras to transform image points
-     * to normalized image coordinates, which are valid for the identity camera matrix. When
-     * passing these coordinates, pass the identity matrix for this parameter.
-     * @param distCoeffs1 Input vector of distortion coefficients
+     * @param points2 Array of the second image points of the same size and format as points1.
+     * @param cameraMatrix1 Camera matrix for the first camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param cameraMatrix2 Camera matrix for the second camera \(K = \vecthreethree{f_x}{0}{c_x}{0}{f_y}{c_y}{0}{0}{1}\) .
+     * @param distCoeffs1 Input vector of distortion coefficients for the first camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
-     * @param distCoeffs2 Input vector of distortion coefficients
+     * @param distCoeffs2 Input vector of distortion coefficients for the second camera
      * \((k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6[, s_1, s_2, s_3, s_4[, \tau_x, \tau_y]]]])\)
      * of 4, 5, 8, 12 or 14 elements. If the vector is NULL/empty, the zero distortion coefficients are assumed.
      * <ul>
@@ -7979,13 +8004,13 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * for the other points. The array is computed only in the RANSAC and LMedS methods.
-     *   </li>
-     * </ul>
      *
      * This function estimates essential matrix based on the five-point algorithm solver in CITE: Nister03 .
      * CITE: SteweniusCFS is also a related. The epipolar geometry is described by the following equation:
@@ -8007,7 +8032,7 @@ public class Calib3d {
     //
 
     public static Mat findEssentialMat(Mat points1, Mat points2, Mat cameraMatrix1, Mat cameraMatrix2, Mat dist_coeff1, Mat dist_coeff2, Mat mask, UsacParams params) {
-        return new Mat(findEssentialMat_19(points1.nativeObj, points2.nativeObj, cameraMatrix1.nativeObj, cameraMatrix2.nativeObj, dist_coeff1.nativeObj, dist_coeff2.nativeObj, mask.nativeObj, params.nativeObj));
+        return new Mat(findEssentialMat_19(points1.nativeObj, points2.nativeObj, cameraMatrix1.nativeObj, cameraMatrix2.nativeObj, dist_coeff1.nativeObj, dist_coeff2.nativeObj, mask.nativeObj, params.getNativeObjAddr()));
     }
 
 
@@ -8073,6 +8098,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -8082,8 +8109,6 @@ public class Calib3d {
      * @param mask Input/output mask for inliers in points1 and points2. If it is not empty, then it marks
      * inliers in points1 and points2 for then given essential matrix E. Only these inliers will be used to
      * recover pose. In the output mask only inliers which pass the cheirality check.
-     *   </li>
-     * </ul>
      *
      * This function decomposes an essential matrix using REF: decomposeEssentialMat and then verifies
      * possible pose hypotheses by doing cheirality check. The cheirality check means that the
@@ -8148,6 +8173,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * @param threshold Parameter used for RANSAC. It is the maximum distance from a point to an epipolar
@@ -8156,8 +8183,6 @@ public class Calib3d {
      * point localization, image resolution, and the image noise.
      * inliers in points1 and points2 for then given essential matrix E. Only these inliers will be used to
      * recover pose. In the output mask only inliers which pass the cheirality check.
-     *   </li>
-     * </ul>
      *
      * This function decomposes an essential matrix using REF: decomposeEssentialMat and then verifies
      * possible pose hypotheses by doing cheirality check. The cheirality check means that the
@@ -8222,6 +8247,8 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * @param prob Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
@@ -8229,8 +8256,6 @@ public class Calib3d {
      * point localization, image resolution, and the image noise.
      * inliers in points1 and points2 for then given essential matrix E. Only these inliers will be used to
      * recover pose. In the output mask only inliers which pass the cheirality check.
-     *   </li>
-     * </ul>
      *
      * This function decomposes an essential matrix using REF: decomposeEssentialMat and then verifies
      * possible pose hypotheses by doing cheirality check. The cheirality check means that the
@@ -8295,14 +8320,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * inliers in points1 and points2 for then given essential matrix E. Only these inliers will be used to
      * recover pose. In the output mask only inliers which pass the cheirality check.
-     *   </li>
-     * </ul>
      *
      * This function decomposes an essential matrix using REF: decomposeEssentialMat and then verifies
      * possible pose hypotheses by doing cheirality check. The cheirality check means that the
@@ -8366,14 +8391,14 @@ public class Calib3d {
      *   </li>
      *   <li>
      *    REF: LMEDS for the LMedS algorithm.
+     *   </li>
+     * </ul>
      * confidence (probability) that the estimated matrix is correct.
      * line in pixels, beyond which the point is considered an outlier and is not used for computing the
      * final fundamental matrix. It can be set to something like 1-3, depending on the accuracy of the
      * point localization, image resolution, and the image noise.
      * inliers in points1 and points2 for then given essential matrix E. Only these inliers will be used to
      * recover pose. In the output mask only inliers which pass the cheirality check.
-     *   </li>
-     * </ul>
      *
      * This function decomposes an essential matrix using REF: decomposeEssentialMat and then verifies
      * possible pose hypotheses by doing cheirality check. The cheirality check means that the
@@ -8949,7 +8974,7 @@ public class Calib3d {
      * x \\
      * y \\
      * \texttt{disparity} (x,y) \\
-     * z
+     * 1
      * \end{bmatrix}.\)
      *
      * SEE:
@@ -8992,7 +9017,7 @@ public class Calib3d {
      * x \\
      * y \\
      * \texttt{disparity} (x,y) \\
-     * z
+     * 1
      * \end{bmatrix}.\)
      *
      * SEE:
@@ -9034,7 +9059,7 @@ public class Calib3d {
      * x \\
      * y \\
      * \texttt{disparity} (x,y) \\
-     * z
+     * 1
      * \end{bmatrix}.\)
      *
      * SEE:
@@ -9520,6 +9545,8 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
@@ -9528,8 +9555,6 @@ public class Calib3d {
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * @param refineIters Maximum number of iterations of refining algorithm (Levenberg-Marquardt).
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9593,6 +9618,8 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
@@ -9600,8 +9627,6 @@ public class Calib3d {
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9665,14 +9690,14 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9736,13 +9761,13 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9806,12 +9831,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9874,12 +9899,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9941,12 +9966,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation matrix \(2 \times 3\) or empty matrix if transformation
      * could not be estimated. The returned matrix has the following form:
@@ -9980,7 +10005,7 @@ public class Calib3d {
     //
 
     public static Mat estimateAffine2D(Mat pts1, Mat pts2, Mat inliers, UsacParams params) {
-        return new Mat(estimateAffine2D_7(pts1.nativeObj, pts2.nativeObj, inliers.nativeObj, params.nativeObj));
+        return new Mat(estimateAffine2D_7(pts1.nativeObj, pts2.nativeObj, inliers.nativeObj, params.getNativeObjAddr()));
     }
 
 
@@ -10003,6 +10028,8 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
@@ -10011,8 +10038,6 @@ public class Calib3d {
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * @param refineIters Maximum number of iterations of refining algorithm (Levenberg-Marquardt).
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10057,6 +10082,8 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
@@ -10064,8 +10091,6 @@ public class Calib3d {
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10110,14 +10135,14 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * @param maxIters The maximum number of robust method iterations.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10162,13 +10187,13 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * @param ransacReprojThreshold Maximum reprojection error in the RANSAC algorithm to consider
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10213,12 +10238,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10262,12 +10287,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10310,12 +10335,12 @@ public class Calib3d {
      *   <li>
      *    REF: LMEDS - Least-Median robust method
      * RANSAC is the default method.
+     *   </li>
+     * </ul>
      * a point as an inlier. Applies only to RANSAC.
      * between 0.95 and 0.99 is usually good enough. Values too close to 1 can slow down the estimation
      * significantly. Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.
      * Passing 0 will disable refining, so the output matrix will be output of robust method.
-     *   </li>
-     * </ul>
      *
      * @return Output 2D affine transformation (4 degrees of freedom) matrix \(2 \times 3\) or
      * empty matrix if transformation could not be estimated.
@@ -10968,13 +10993,14 @@ public class Calib3d {
      *
      *     @param undistorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is
      *     the number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param alpha The skew coefficient.
      *     @param distorted Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .
      *
      *     Note that the function assumes the camera intrinsic matrix of the undistorted points to be identity.
-     *     This means if you want to distort image points you have to multiply them with \(K^{-1}\).
+     *     This means if you want to distort image points you have to multiply them with \(K^{-1}\) or
+     *     use another function overload.
      */
     public static void fisheye_distortPoints(Mat undistorted, Mat distorted, Mat K, Mat D, double alpha) {
         fisheye_distortPoints_0(undistorted.nativeObj, distorted.nativeObj, K.nativeObj, D.nativeObj, alpha);
@@ -10985,15 +11011,54 @@ public class Calib3d {
      *
      *     @param undistorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is
      *     the number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param distorted Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .
      *
      *     Note that the function assumes the camera intrinsic matrix of the undistorted points to be identity.
-     *     This means if you want to distort image points you have to multiply them with \(K^{-1}\).
+     *     This means if you want to distort image points you have to multiply them with \(K^{-1}\) or
+     *     use another function overload.
      */
     public static void fisheye_distortPoints(Mat undistorted, Mat distorted, Mat K, Mat D) {
         fisheye_distortPoints_1(undistorted.nativeObj, distorted.nativeObj, K.nativeObj, D.nativeObj);
+    }
+
+
+    //
+    // C++:  void cv::fisheye::distortPoints(Mat undistorted, Mat& distorted, Mat Kundistorted, Mat K, Mat D, double alpha = 0)
+    //
+
+    /**
+     *
+     *     Overload of distortPoints function to handle cases when undistorted points are obtained with non-identity
+     *     camera matrix, e.g. output of #estimateNewCameraMatrixForUndistortRectify.
+     *     @param undistorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is
+     *     the number of points in the view.
+     *     @param Kundistorted Camera intrinsic matrix used as new camera matrix for undistortion.
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
+     *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
+     *     @param alpha The skew coefficient.
+     *     @param distorted Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .
+     *     SEE: estimateNewCameraMatrixForUndistortRectify
+     */
+    public static void fisheye_distortPoints(Mat undistorted, Mat distorted, Mat Kundistorted, Mat K, Mat D, double alpha) {
+        fisheye_distortPoints_2(undistorted.nativeObj, distorted.nativeObj, Kundistorted.nativeObj, K.nativeObj, D.nativeObj, alpha);
+    }
+
+    /**
+     *
+     *     Overload of distortPoints function to handle cases when undistorted points are obtained with non-identity
+     *     camera matrix, e.g. output of #estimateNewCameraMatrixForUndistortRectify.
+     *     @param undistorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is
+     *     the number of points in the view.
+     *     @param Kundistorted Camera intrinsic matrix used as new camera matrix for undistortion.
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
+     *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
+     *     @param distorted Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .
+     *     SEE: estimateNewCameraMatrixForUndistortRectify
+     */
+    public static void fisheye_distortPoints(Mat undistorted, Mat distorted, Mat Kundistorted, Mat K, Mat D) {
+        fisheye_distortPoints_3(undistorted.nativeObj, distorted.nativeObj, Kundistorted.nativeObj, K.nativeObj, D.nativeObj);
     }
 
 
@@ -11006,7 +11071,7 @@ public class Calib3d {
      *
      *     @param distorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is the
      *     number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
      *     1-channel or 1x1 3-channel
@@ -11023,7 +11088,7 @@ public class Calib3d {
      *
      *     @param distorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is the
      *     number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
      *     1-channel or 1x1 3-channel
@@ -11039,7 +11104,7 @@ public class Calib3d {
      *
      *     @param distorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is the
      *     number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
      *     1-channel or 1x1 3-channel
@@ -11054,7 +11119,7 @@ public class Calib3d {
      *
      *     @param distorted Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), where N is the
      *     number of points in the view.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     1-channel or 1x1 3-channel
      *     @param undistorted Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .
@@ -11072,7 +11137,7 @@ public class Calib3d {
      * Computes undistortion and rectification maps for image transform by #remap. If D is empty zero
      *     distortion is used, if R or P is empty identity matrixes are used.
      *
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
      *     1-channel or 1x1 3-channel
@@ -11097,7 +11162,7 @@ public class Calib3d {
      *
      *     @param distorted image with fisheye lens distortion.
      *     @param undistorted Output image with compensated fisheye lens distortion.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param Knew Camera intrinsic matrix of the distorted image. By default, it is the identity matrix but you
      *     may additionally scale and shift the result by using a different matrix.
@@ -11140,7 +11205,7 @@ public class Calib3d {
      *
      *     @param distorted image with fisheye lens distortion.
      *     @param undistorted Output image with compensated fisheye lens distortion.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param Knew Camera intrinsic matrix of the distorted image. By default, it is the identity matrix but you
      *     may additionally scale and shift the result by using a different matrix.
@@ -11182,7 +11247,7 @@ public class Calib3d {
      *
      *     @param distorted image with fisheye lens distortion.
      *     @param undistorted Output image with compensated fisheye lens distortion.
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     may additionally scale and shift the result by using a different matrix.
      *
@@ -11226,7 +11291,7 @@ public class Calib3d {
     /**
      * Estimates new camera intrinsic matrix for undistortion or rectification.
      *
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param image_size Size of the image
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
@@ -11244,7 +11309,7 @@ public class Calib3d {
     /**
      * Estimates new camera intrinsic matrix for undistortion or rectification.
      *
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param image_size Size of the image
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
@@ -11261,7 +11326,7 @@ public class Calib3d {
     /**
      * Estimates new camera intrinsic matrix for undistortion or rectification.
      *
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param image_size Size of the image
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
@@ -11277,7 +11342,7 @@ public class Calib3d {
     /**
      * Estimates new camera intrinsic matrix for undistortion or rectification.
      *
-     *     @param K Camera intrinsic matrix \(cameramatrix{K}\).
+     *     @param K Camera intrinsic matrix \(\cameramatrix{K}\).
      *     @param image_size Size of the image
      *     @param D Input vector of distortion coefficients \(\distcoeffsfisheye\).
      *     @param R Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
@@ -11308,7 +11373,7 @@ public class Calib3d {
      *     REF: fisheye::CALIB_USE_INTRINSIC_GUESS is specified, some or all of fx, fy, cx, cy must be
      *     initialized before calling the function.
      *     @param D Output vector of distortion coefficients \(\distcoeffsfisheye\).
-     *     @param rvecs Output vector of rotation vectors (see Rodrigues ) estimated for each pattern view.
+     *     @param rvecs Output vector of rotation vectors (see REF: Rodrigues ) estimated for each pattern view.
      *     That is, each k-th rotation vector together with the corresponding k-th translation vector (see
      *     the next output parameter description) brings the calibration pattern from the model coordinate
      *     space (in which object points are specified) to the world coordinate space, that is, a real
@@ -11342,9 +11407,9 @@ public class Calib3d {
      *   <li>
      *         REF: fisheye::CALIB_FIX_FOCAL_LENGTH The focal length is not changed during the global
      * optimization. It is the \(max(width,height)/\pi\) or the provided \(f_x\), \(f_y\) when REF: fisheye::CALIB_USE_INTRINSIC_GUESS is set too.
-     *     @param criteria Termination criteria for the iterative optimization algorithm.
      *   </li>
      * </ul>
+     *     @param criteria Termination criteria for the iterative optimization algorithm.
      * @return automatically generated
      */
     public static double fisheye_calibrate(List<Mat> objectPoints, List<Mat> imagePoints, Size image_size, Mat K, Mat D, List<Mat> rvecs, List<Mat> tvecs, int flags, TermCriteria criteria) {
@@ -11374,7 +11439,7 @@ public class Calib3d {
      *     REF: fisheye::CALIB_USE_INTRINSIC_GUESS is specified, some or all of fx, fy, cx, cy must be
      *     initialized before calling the function.
      *     @param D Output vector of distortion coefficients \(\distcoeffsfisheye\).
-     *     @param rvecs Output vector of rotation vectors (see Rodrigues ) estimated for each pattern view.
+     *     @param rvecs Output vector of rotation vectors (see REF: Rodrigues ) estimated for each pattern view.
      *     That is, each k-th rotation vector together with the corresponding k-th translation vector (see
      *     the next output parameter description) brings the calibration pattern from the model coordinate
      *     space (in which object points are specified) to the world coordinate space, that is, a real
@@ -11439,7 +11504,7 @@ public class Calib3d {
      *     REF: fisheye::CALIB_USE_INTRINSIC_GUESS is specified, some or all of fx, fy, cx, cy must be
      *     initialized before calling the function.
      *     @param D Output vector of distortion coefficients \(\distcoeffsfisheye\).
-     *     @param rvecs Output vector of rotation vectors (see Rodrigues ) estimated for each pattern view.
+     *     @param rvecs Output vector of rotation vectors (see REF: Rodrigues ) estimated for each pattern view.
      *     That is, each k-th rotation vector together with the corresponding k-th translation vector (see
      *     the next output parameter description) brings the calibration pattern from the model coordinate
      *     space (in which object points are specified) to the world coordinate space, that is, a real
@@ -11685,9 +11750,9 @@ public class Calib3d {
      *   <li>
      *        REF: fisheye::CALIB_FIX_K1,..., REF: fisheye::CALIB_FIX_K4 Selected distortion coefficients are set to zeros and stay
      *     zero.
-     *     @param criteria Termination criteria for the iterative optimization algorithm.
      *   </li>
      * </ul>
+     *     @param criteria Termination criteria for the iterative optimization algorithm.
      * @return automatically generated
      */
     public static double fisheye_stereoCalibrate(List<Mat> objectPoints, List<Mat> imagePoints1, List<Mat> imagePoints2, Mat K1, Mat D1, Mat K2, Mat D2, Size imageSize, Mat R, Mat T, List<Mat> rvecs, List<Mat> tvecs, int flags, TermCriteria criteria) {
@@ -11867,6 +11932,574 @@ public class Calib3d {
         Mat imagePoints1_mat = Converters.vector_Mat_to_Mat(imagePoints1);
         Mat imagePoints2_mat = Converters.vector_Mat_to_Mat(imagePoints2);
         return fisheye_stereoCalibrate_5(objectPoints_mat.nativeObj, imagePoints1_mat.nativeObj, imagePoints2_mat.nativeObj, K1.nativeObj, D1.nativeObj, K2.nativeObj, D2.nativeObj, imageSize.width, imageSize.height, R.nativeObj, T.nativeObj);
+    }
+
+
+    //
+    // C++:  bool cv::fisheye::solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec, bool useExtrinsicGuess = false, int flags = SOLVEPNP_ITERATIVE, TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8))
+    //
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can also be passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can also be passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param flags Method for solving a PnP problem: see REF: calib3d_solvePnP_flags
+     *     @param criteria Termination criteria for internal undistortPoints call.
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int flags, TermCriteria criteria) {
+        return fisheye_solvePnP_0(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, flags, criteria.type, criteria.maxCount, criteria.epsilon);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can also be passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can also be passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param flags Method for solving a PnP problem: see REF: calib3d_solvePnP_flags
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int flags) {
+        return fisheye_solvePnP_1(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, flags);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can also be passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can also be passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess) {
+        return fisheye_solvePnP_2(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can also be passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can also be passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec) {
+        return fisheye_solvePnP_3(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj);
+    }
+
+
+    //
+    // C++:  bool cv::fisheye::solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec, bool useExtrinsicGuess = false, int iterationsCount = 100, float reprojectionError = 8.0, double confidence = 0.99, Mat& inliers = Mat(), int flags = SOLVEPNP_ITERATIVE, TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8))
+    //
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     @param reprojectionError Inlier threshold value used by the RANSAC procedure. The parameter value
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     @param confidence The probability that the algorithm produces a useful result.
+     *     @param inliers Output vector that contains indices of inliers in objectPoints and imagePoints .
+     *     @param flags Method for solving a PnP problem: see REF: calib3d_solvePnP_flags
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     @param criteria Termination criteria for internal undistortPoints call.
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, Mat inliers, int flags, TermCriteria criteria) {
+        return fisheye_solvePnPRansac_0(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount, reprojectionError, confidence, inliers.nativeObj, flags, criteria.type, criteria.maxCount, criteria.epsilon);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     @param reprojectionError Inlier threshold value used by the RANSAC procedure. The parameter value
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     @param confidence The probability that the algorithm produces a useful result.
+     *     @param inliers Output vector that contains indices of inliers in objectPoints and imagePoints .
+     *     @param flags Method for solving a PnP problem: see REF: calib3d_solvePnP_flags
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, Mat inliers, int flags) {
+        return fisheye_solvePnPRansac_1(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount, reprojectionError, confidence, inliers.nativeObj, flags);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     @param reprojectionError Inlier threshold value used by the RANSAC procedure. The parameter value
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     @param confidence The probability that the algorithm produces a useful result.
+     *     @param inliers Output vector that contains indices of inliers in objectPoints and imagePoints .
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, Mat inliers) {
+        return fisheye_solvePnPRansac_2(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount, reprojectionError, confidence, inliers.nativeObj);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     @param reprojectionError Inlier threshold value used by the RANSAC procedure. The parameter value
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     @param confidence The probability that the algorithm produces a useful result.
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence) {
+        return fisheye_solvePnPRansac_3(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount, reprojectionError, confidence);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     @param reprojectionError Inlier threshold value used by the RANSAC procedure. The parameter value
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError) {
+        return fisheye_solvePnPRansac_4(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount, reprojectionError);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     @param iterationsCount Number of iterations.
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess, int iterationsCount) {
+        return fisheye_solvePnPRansac_5(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess, iterationsCount);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     @param useExtrinsicGuess Parameter used for #SOLVEPNP_ITERATIVE. If true (1), the function uses
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, boolean useExtrinsicGuess) {
+        return fisheye_solvePnPRansac_6(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj, useExtrinsicGuess);
+    }
+
+    /**
+     * Finds an object pose from 3D-2D point correspondences using the RANSAC scheme for fisheye camera moodel.
+     *
+     *     @param objectPoints Array of object points in the object coordinate space, Nx3 1-channel or
+     *     1xN/Nx1 3-channel, where N is the number of points. vector&lt;Point3d&gt; can be also passed here.
+     *     @param imagePoints Array of corresponding image points, Nx2 1-channel or 1xN/Nx1 2-channel,
+     *     where N is the number of points. vector&lt;Point2d&gt; can be also passed here.
+     *     @param cameraMatrix Input camera intrinsic matrix \(\cameramatrix{A}\) .
+     *     @param distCoeffs Input vector of distortion coefficients (4x1/1x4).
+     *     @param rvec Output rotation vector (see REF: Rodrigues ) that, together with tvec, brings points from
+     *     the model coordinate system to the camera coordinate system.
+     *     @param tvec Output translation vector.
+     *     the provided rvec and tvec values as initial approximations of the rotation and translation
+     *     vectors, respectively, and further optimizes them.
+     *     is the maximum allowed distance between the observed and computed point projections to consider it
+     *     an inlier.
+     *     This function returns the rotation and the translation vectors that transform a 3D point expressed in the object
+     *     coordinate frame to the camera coordinate frame, using different methods:
+     * <ul>
+     *   <li>
+     *      P3P methods (REF: SOLVEPNP_P3P, REF: SOLVEPNP_AP3P): need 4 input points to return a unique solution.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE Input points must be &gt;= 4 and object points must be coplanar.
+     *   </li>
+     *   <li>
+     *      REF: SOLVEPNP_IPPE_SQUARE Special case suitable for marker pose estimation.
+     *     Number of input points must be 4. Object points must be defined in the following order:
+     *   </li>
+     *   <li>
+     *      point 0: [-squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 1: [ squareLength / 2,  squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 2: [ squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      point 3: [-squareLength / 2, -squareLength / 2, 0]
+     *   </li>
+     *   <li>
+     *      for all the other flags, number of input points must be &gt;= 4 and object points can be in any configuration.
+     *   </li>
+     * </ul>
+     *     The function interally undistorts points with REF: undistortPoints and call REF: cv::solvePnP,
+     *     thus the input are very similar. More information about Perspective-n-Points is described in REF: calib3d_solvePnP
+     *     for more information.
+     * @return automatically generated
+     */
+    public static boolean fisheye_solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec) {
+        return fisheye_solvePnPRansac_7(objectPoints.nativeObj, imagePoints.nativeObj, cameraMatrix.nativeObj, distCoeffs.nativeObj, rvec.nativeObj, tvec.nativeObj);
     }
 
 
@@ -12242,6 +12875,10 @@ public class Calib3d {
     private static native void fisheye_distortPoints_0(long undistorted_nativeObj, long distorted_nativeObj, long K_nativeObj, long D_nativeObj, double alpha);
     private static native void fisheye_distortPoints_1(long undistorted_nativeObj, long distorted_nativeObj, long K_nativeObj, long D_nativeObj);
 
+    // C++:  void cv::fisheye::distortPoints(Mat undistorted, Mat& distorted, Mat Kundistorted, Mat K, Mat D, double alpha = 0)
+    private static native void fisheye_distortPoints_2(long undistorted_nativeObj, long distorted_nativeObj, long Kundistorted_nativeObj, long K_nativeObj, long D_nativeObj, double alpha);
+    private static native void fisheye_distortPoints_3(long undistorted_nativeObj, long distorted_nativeObj, long Kundistorted_nativeObj, long K_nativeObj, long D_nativeObj);
+
     // C++:  void cv::fisheye::undistortPoints(Mat distorted, Mat& undistorted, Mat K, Mat D, Mat R = Mat(), Mat P = Mat(), TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8))
     private static native void fisheye_undistortPoints_0(long distorted_nativeObj, long undistorted_nativeObj, long K_nativeObj, long D_nativeObj, long R_nativeObj, long P_nativeObj, int criteria_type, int criteria_maxCount, double criteria_epsilon);
     private static native void fisheye_undistortPoints_1(long distorted_nativeObj, long undistorted_nativeObj, long K_nativeObj, long D_nativeObj, long R_nativeObj, long P_nativeObj);
@@ -12282,5 +12919,21 @@ public class Calib3d {
     private static native double fisheye_stereoCalibrate_3(long objectPoints_mat_nativeObj, long imagePoints1_mat_nativeObj, long imagePoints2_mat_nativeObj, long K1_nativeObj, long D1_nativeObj, long K2_nativeObj, long D2_nativeObj, double imageSize_width, double imageSize_height, long R_nativeObj, long T_nativeObj, int flags, int criteria_type, int criteria_maxCount, double criteria_epsilon);
     private static native double fisheye_stereoCalibrate_4(long objectPoints_mat_nativeObj, long imagePoints1_mat_nativeObj, long imagePoints2_mat_nativeObj, long K1_nativeObj, long D1_nativeObj, long K2_nativeObj, long D2_nativeObj, double imageSize_width, double imageSize_height, long R_nativeObj, long T_nativeObj, int flags);
     private static native double fisheye_stereoCalibrate_5(long objectPoints_mat_nativeObj, long imagePoints1_mat_nativeObj, long imagePoints2_mat_nativeObj, long K1_nativeObj, long D1_nativeObj, long K2_nativeObj, long D2_nativeObj, double imageSize_width, double imageSize_height, long R_nativeObj, long T_nativeObj);
+
+    // C++:  bool cv::fisheye::solvePnP(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec, bool useExtrinsicGuess = false, int flags = SOLVEPNP_ITERATIVE, TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8))
+    private static native boolean fisheye_solvePnP_0(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int flags, int criteria_type, int criteria_maxCount, double criteria_epsilon);
+    private static native boolean fisheye_solvePnP_1(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int flags);
+    private static native boolean fisheye_solvePnP_2(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess);
+    private static native boolean fisheye_solvePnP_3(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj);
+
+    // C++:  bool cv::fisheye::solvePnPRansac(Mat objectPoints, Mat imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec, bool useExtrinsicGuess = false, int iterationsCount = 100, float reprojectionError = 8.0, double confidence = 0.99, Mat& inliers = Mat(), int flags = SOLVEPNP_ITERATIVE, TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8))
+    private static native boolean fisheye_solvePnPRansac_0(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, long inliers_nativeObj, int flags, int criteria_type, int criteria_maxCount, double criteria_epsilon);
+    private static native boolean fisheye_solvePnPRansac_1(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, long inliers_nativeObj, int flags);
+    private static native boolean fisheye_solvePnPRansac_2(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence, long inliers_nativeObj);
+    private static native boolean fisheye_solvePnPRansac_3(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError, double confidence);
+    private static native boolean fisheye_solvePnPRansac_4(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount, float reprojectionError);
+    private static native boolean fisheye_solvePnPRansac_5(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess, int iterationsCount);
+    private static native boolean fisheye_solvePnPRansac_6(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj, boolean useExtrinsicGuess);
+    private static native boolean fisheye_solvePnPRansac_7(long objectPoints_nativeObj, long imagePoints_nativeObj, long cameraMatrix_nativeObj, long distCoeffs_nativeObj, long rvec_nativeObj, long tvec_nativeObj);
 
 }

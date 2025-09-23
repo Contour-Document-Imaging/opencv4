@@ -62,7 +62,8 @@ public class Objdetect {
             DICT_APRILTAG_16h5 = 0+17,
             DICT_APRILTAG_25h9 = 0+18,
             DICT_APRILTAG_36h10 = 0+19,
-            DICT_APRILTAG_36h11 = 0+20;
+            DICT_APRILTAG_36h11 = 0+20,
+            DICT_ARUCO_MIP_36h12 = 0+21;
 
 
     //
@@ -163,7 +164,7 @@ public class Objdetect {
      * This function returns a marker image in its canonical form (i.e. ready to be printed)
      */
     public static void generateImageMarker(Dictionary dictionary, int id, int sidePixels, Mat img, int borderBits) {
-        generateImageMarker_0(dictionary.nativeObj, id, sidePixels, img.nativeObj, borderBits);
+        generateImageMarker_0(dictionary.getNativeObjAddr(), id, sidePixels, img.nativeObj, borderBits);
     }
 
     /**
@@ -177,77 +178,7 @@ public class Objdetect {
      * This function returns a marker image in its canonical form (i.e. ready to be printed)
      */
     public static void generateImageMarker(Dictionary dictionary, int id, int sidePixels, Mat img) {
-        generateImageMarker_1(dictionary.nativeObj, id, sidePixels, img.nativeObj);
-    }
-
-
-    //
-    // C++:  Dictionary cv::aruco::getPredefinedDictionary(int dict)
-    //
-
-    /**
-     * Returns one of the predefined dictionaries referenced by DICT_*.
-     * @param dict automatically generated
-     * @return automatically generated
-     */
-    public static Dictionary getPredefinedDictionary(int dict) {
-        return new Dictionary(getPredefinedDictionary_0(dict));
-    }
-
-
-    //
-    // C++:  Dictionary cv::aruco::extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary = Dictionary(), int randomSeed = 0)
-    //
-
-    /**
-     * Extend base dictionary by new nMarkers
-     *
-     * @param nMarkers number of markers in the dictionary
-     * @param markerSize number of bits per dimension of each markers
-     * @param baseDictionary Include the markers in this dictionary at the beginning (optional)
-     * @param randomSeed a user supplied seed for theRNG()
-     *
-     * This function creates a new dictionary composed by nMarkers markers and each markers composed
-     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
-     * included and the rest are generated based on them. If the size of baseDictionary is higher
-     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
-     * @return automatically generated
-     */
-    public static Dictionary extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary, int randomSeed) {
-        return new Dictionary(extendDictionary_0(nMarkers, markerSize, baseDictionary.nativeObj, randomSeed));
-    }
-
-    /**
-     * Extend base dictionary by new nMarkers
-     *
-     * @param nMarkers number of markers in the dictionary
-     * @param markerSize number of bits per dimension of each markers
-     * @param baseDictionary Include the markers in this dictionary at the beginning (optional)
-     *
-     * This function creates a new dictionary composed by nMarkers markers and each markers composed
-     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
-     * included and the rest are generated based on them. If the size of baseDictionary is higher
-     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
-     * @return automatically generated
-     */
-    public static Dictionary extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary) {
-        return new Dictionary(extendDictionary_1(nMarkers, markerSize, baseDictionary.nativeObj));
-    }
-
-    /**
-     * Extend base dictionary by new nMarkers
-     *
-     * @param nMarkers number of markers in the dictionary
-     * @param markerSize number of bits per dimension of each markers
-     *
-     * This function creates a new dictionary composed by nMarkers markers and each markers composed
-     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
-     * included and the rest are generated based on them. If the size of baseDictionary is higher
-     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
-     * @return automatically generated
-     */
-    public static Dictionary extendDictionary(int nMarkers, int markerSize) {
-        return new Dictionary(extendDictionary_2(nMarkers, markerSize));
+        generateImageMarker_1(dictionary.getNativeObjAddr(), id, sidePixels, img.nativeObj);
     }
 
 
@@ -369,6 +300,76 @@ public class Objdetect {
     }
 
 
+    //
+    // C++:  Dictionary cv::aruco::getPredefinedDictionary(int dict)
+    //
+
+    /**
+     * Returns one of the predefined dictionaries referenced by DICT_*.
+     * @param dict automatically generated
+     * @return automatically generated
+     */
+    public static Dictionary getPredefinedDictionary(int dict) {
+        return new Dictionary(getPredefinedDictionary_0(dict));
+    }
+
+
+    //
+    // C++:  Dictionary cv::aruco::extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary = Dictionary(), int randomSeed = 0)
+    //
+
+    /**
+     * Extend base dictionary by new nMarkers
+     *
+     * @param nMarkers number of markers in the dictionary
+     * @param markerSize number of bits per dimension of each markers
+     * @param baseDictionary Include the markers in this dictionary at the beginning (optional)
+     * @param randomSeed a user supplied seed for theRNG()
+     *
+     * This function creates a new dictionary composed by nMarkers markers and each markers composed
+     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
+     * included and the rest are generated based on them. If the size of baseDictionary is higher
+     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
+     * @return automatically generated
+     */
+    public static Dictionary extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary, int randomSeed) {
+        return new Dictionary(extendDictionary_0(nMarkers, markerSize, baseDictionary.getNativeObjAddr(), randomSeed));
+    }
+
+    /**
+     * Extend base dictionary by new nMarkers
+     *
+     * @param nMarkers number of markers in the dictionary
+     * @param markerSize number of bits per dimension of each markers
+     * @param baseDictionary Include the markers in this dictionary at the beginning (optional)
+     *
+     * This function creates a new dictionary composed by nMarkers markers and each markers composed
+     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
+     * included and the rest are generated based on them. If the size of baseDictionary is higher
+     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
+     * @return automatically generated
+     */
+    public static Dictionary extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary) {
+        return new Dictionary(extendDictionary_1(nMarkers, markerSize, baseDictionary.getNativeObjAddr()));
+    }
+
+    /**
+     * Extend base dictionary by new nMarkers
+     *
+     * @param nMarkers number of markers in the dictionary
+     * @param markerSize number of bits per dimension of each markers
+     *
+     * This function creates a new dictionary composed by nMarkers markers and each markers composed
+     * by markerSize x markerSize bits. If baseDictionary is provided, its markers are directly
+     * included and the rest are generated based on them. If the size of baseDictionary is higher
+     * than nMarkers, only the first nMarkers in baseDictionary are taken and no new marker is added.
+     * @return automatically generated
+     */
+    public static Dictionary extendDictionary(int nMarkers, int markerSize) {
+        return new Dictionary(extendDictionary_2(nMarkers, markerSize));
+    }
+
+
 
 
     // C++:  void cv::groupRectangles(vector_Rect& rectList, vector_int& weights, int groupThreshold, double eps = 0.2)
@@ -384,14 +385,6 @@ public class Objdetect {
     private static native void generateImageMarker_0(long dictionary_nativeObj, int id, int sidePixels, long img_nativeObj, int borderBits);
     private static native void generateImageMarker_1(long dictionary_nativeObj, int id, int sidePixels, long img_nativeObj);
 
-    // C++:  Dictionary cv::aruco::getPredefinedDictionary(int dict)
-    private static native long getPredefinedDictionary_0(int dict);
-
-    // C++:  Dictionary cv::aruco::extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary = Dictionary(), int randomSeed = 0)
-    private static native long extendDictionary_0(int nMarkers, int markerSize, long baseDictionary_nativeObj, int randomSeed);
-    private static native long extendDictionary_1(int nMarkers, int markerSize, long baseDictionary_nativeObj);
-    private static native long extendDictionary_2(int nMarkers, int markerSize);
-
     // C++:  void cv::aruco::drawDetectedCornersCharuco(Mat& image, Mat charucoCorners, Mat charucoIds = Mat(), Scalar cornerColor = Scalar(255, 0, 0))
     private static native void drawDetectedCornersCharuco_0(long image_nativeObj, long charucoCorners_nativeObj, long charucoIds_nativeObj, double cornerColor_val0, double cornerColor_val1, double cornerColor_val2, double cornerColor_val3);
     private static native void drawDetectedCornersCharuco_1(long image_nativeObj, long charucoCorners_nativeObj, long charucoIds_nativeObj);
@@ -401,5 +394,13 @@ public class Objdetect {
     private static native void drawDetectedDiamonds_0(long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj, double borderColor_val0, double borderColor_val1, double borderColor_val2, double borderColor_val3);
     private static native void drawDetectedDiamonds_1(long image_nativeObj, long diamondCorners_mat_nativeObj, long diamondIds_nativeObj);
     private static native void drawDetectedDiamonds_2(long image_nativeObj, long diamondCorners_mat_nativeObj);
+
+    // C++:  Dictionary cv::aruco::getPredefinedDictionary(int dict)
+    private static native long getPredefinedDictionary_0(int dict);
+
+    // C++:  Dictionary cv::aruco::extendDictionary(int nMarkers, int markerSize, Dictionary baseDictionary = Dictionary(), int randomSeed = 0)
+    private static native long extendDictionary_0(int nMarkers, int markerSize, long baseDictionary_nativeObj, int randomSeed);
+    private static native long extendDictionary_1(int nMarkers, int markerSize, long baseDictionary_nativeObj);
+    private static native long extendDictionary_2(int nMarkers, int markerSize);
 
 }
