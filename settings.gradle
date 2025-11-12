@@ -6,6 +6,6 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "Opencv-4.7"
+rootProject.name = "Opencv-4.12.0"
 include ':app'
 include ':opencv'
