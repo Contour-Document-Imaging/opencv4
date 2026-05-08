@@ -104,12 +104,12 @@ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
 
 android {
     namespace 'org.opencv'
-    compileSdk 34
+    compileSdk 35
     ndkVersion "28.1.13356709"
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdk 34
+        minSdkVersion 23
+        targetSdk 35
 
         versionCode openCVersionCode
         versionName openCVersionName
@@ -120,6 +120,11 @@ android {
                 targets "opencv_jni_shared"
             }
         }
+    }
+
+    buildFeatures {
+        aidl true
+        buildConfig true
     }
 
     buildTypes {
@@ -163,12 +168,22 @@ android {
         }
     }
 
-    afterEvaluate {
-        publishing {
-            publications {
-                release(MavenPublication) {
-                    from components.release
-                }
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.Contour-Document-Imaging'
+            artifactId = 'opencv4'
+            version = '4.12.0'
+
+            afterEvaluate {
+                from components.release
             }
         }
     }
